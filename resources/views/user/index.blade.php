@@ -16,9 +16,9 @@
             <input type="text" name="search-user" id="search-user" class="search-user" placeholder="Search User">
             <i class="bi bi-search"></i>
         </div> 
-        <div class="user-list grid-col-4 margin-top">
+        {{-- <div class="user-list grid-col-4 margin-top"> --}}
             {{-- @if(!isset($result) && count($results) == 0) --}}
-            @foreach($users as $user) 
+            {{-- @foreach($users as $user) 
                 <div class="user-card">
                     <div class="user-profile">
                         <img src="{{asset('storage/images/'.$user->photo)}}" alt="Photo">
@@ -45,29 +45,34 @@
                         </form>
                     </div>
                 </div>
-            @endforeach  
+            @endforeach   --}}
             {{-- @endif --}}
-        </div>
+        {{-- </div> --}}
     </div>
 
     <script type="text/javascript">
        $(document).ready(function(){
            $('#search-user').on('keyup',function(){
                let value = $(this).val();
-               console.log(value)
                 $.ajax({
                     type: "GET",
-                    url: "search/"+value,
+                    url: "{{route('search')}}",
+                    data: {query:value},
                     success: function (response) {
-                        $('.user-card').html(response);
+                        $('.container').append(response.output);
                     }
                 });
-           })
-       }) 
+           });
+       });
     </script>
 
     <script type="text/javascript">
-        $.ajaxSetup({header:{'csrftoken':'{{csrf_token()}}'}});
+       // $.ajaxSetup({header:{'csrftoken':'{{csrf_token()}}'}});
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
     </script>
  
 @endsection

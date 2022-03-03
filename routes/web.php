@@ -13,5 +13,6 @@ use App\Http\Controllers\UserController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/',[UserController::class,'index']);
 Route::resource('/user',UserController::class);
-Route::get('/search/{name}',[UserController::class,'search'])->name('search');
+Route::get('search',[UserController::class,'search'])->name('search');
