@@ -14,3 +14,4 @@ use App\Http\Controllers\UserController;
 |
 */
 Route::resource('/user',UserController::class);
+Route::get('/search/{name}',[UserController::class,'search'])->name('search');

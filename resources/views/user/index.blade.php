@@ -13,10 +13,11 @@
             </a>
         </div>
         <div class="search-group">
-            <input type="text" name="search-user" id="" class="search-user" placeholder="Search User">
+            <input type="text" name="search-user" id="search-user" class="search-user" placeholder="Search User">
             <i class="bi bi-search"></i>
         </div> 
         <div class="user-list grid-col-4 margin-top">
+            {{-- @if(!isset($result) && count($results) == 0) --}}
             @foreach($users as $user) 
                 <div class="user-card">
                     <div class="user-profile">
@@ -45,29 +46,28 @@
                     </div>
                 </div>
             @endforeach  
+            {{-- @endif --}}
         </div>
     </div>
 
-   <script type="text/javascript">
-        $.ajaxSetup({
-            headers: ({'csrftoken':'{{csrf_token()}}'}) 
-        });
-
-        $(document).ready(function(){
-            $('search-group search-user').on('keyup input',function(){
-                let inputVal = $(this).val();
-                let result = $('.user-list');
-
+    <script type="text/javascript">
+       $(document).ready(function(){
+           $('#search-user').on('keyup',function(){
+               let value = $(this).val();
+               console.log(value)
                 $.ajax({
-                    type: 'get',
-                    url: '{{route('search')}}',
-                    data: {'search': inputVal},
-                    success: function(data){
-                        $('.user-card').html(data);
+                    type: "GET",
+                    url: "search/"+value,
+                    success: function (response) {
+                        $('.user-card').html(response);
                     }
-                })
-            })
-        })
+                });
+           })
+       }) 
+    </script>
+
+    <script type="text/javascript">
+        $.ajaxSetup({header:{'csrftoken':'{{csrf_token()}}'}});
     </script>
  
 @endsection
