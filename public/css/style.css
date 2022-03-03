@@ -144,5 +144,21 @@ img{
 .user-list .user-card .user-details form {
     margin-top: auto;
 }
+.search-group{
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.search-group .search-user{
+    padding: .5rem;
+    font-size: 1.25rem;
+    border-radius: 5px;
+}
+.search-group i{
+    font-size: 1.35rem;
+    position: absolute;
+    right: 1rem;
+}
 
 

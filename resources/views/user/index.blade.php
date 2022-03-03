@@ -12,6 +12,10 @@
                 Add User
             </a>
         </div>
+        <div class="search-group">
+            <input type="text" name="search-user" id="" class="search-user" placeholder="Search User">
+            <i class="bi bi-search"></i>
+        </div> 
         <div class="user-list grid-col-4 margin-top">
             @foreach($users as $user) 
                 <div class="user-card">
@@ -43,5 +47,27 @@
             @endforeach  
         </div>
     </div>
+
+   <script type="text/javascript">
+        $.ajaxSetup({
+            headers: ({'csrftoken':'{{csrf_token()}}'}) 
+        });
+
+        $(document).ready(function(){
+            $('search-group search-user').on('keyup input',function(){
+                let inputVal = $(this).val();
+                let result = $('.user-list');
+
+                $.ajax({
+                    type: 'get',
+                    url: '{{route('search')}}',
+                    data: {'search': inputVal},
+                    success: function(data){
+                        $('.user-card').html(data);
+                    }
+                })
+            })
+        })
+    </script>
  
 @endsection
