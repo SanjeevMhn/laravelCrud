@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use LDAP\Result;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -15,57 +16,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        //$users = User::all();
-        //return view('user.index',compact('users'));
-        return view('user.index');
+        $users = User::all();
+        return view('user.index',compact('users'));
     }
-
-    public function search(Request $request){
-
-        if($request->ajax()){
-            $users = User::where('name','LIKE','%'.$request->query.'%')->get();
-            echo '<pre>'.$users.'</pre>';
-            $output = '';
-            if(count($users) > 0){
-                $output .= '
-                    <div class="user-list grid-col-4 margin-top">';
-                        foreach($users as $user){
-                           $output.='<div class="user-card">
-                        <div class="user-profile">
-                            <img src="{{asset("storage/images/"'.$user->photo.'")}}">
-                        </div>
-                        <div class="user-details">
-                            <h2 class="user-name">'.
-                             $user->name.
-                            '</h2>
-                            <p class="user-email">'.
-                                $user->email.
-                            '</p>
-                            <form action="{{route("user.destroy"'.$user->id.')}}" method="post" class="flex">
-                                @csrf
-                                @method("DELETE")
-                                <a href="{{route("user.show"'.$user->id.')}}" class="btn-small blue">
-                                    <i class="bi bi-eye"></i>
-                                </a>
-                                <a href="{{route("user.edit"'.$user->id.')}}" class="btn-small orange">
-                                    <i class="bi bi-pencil"></i>
-                                </a>
-                                <button type="submit" class="btn-small red">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            </form>
-                        </div>
-                    </div>'; 
-                }
-            }else{
-                $output .= '<p class="error-msg"> No matches found';
-            }
-            //return $output;
-            return response()->json(['output'=>$output]);
-        }
-        
-    }
-
+    
     /**
      * Show the form for creating a new resource.
      *

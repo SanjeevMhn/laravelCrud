@@ -16,12 +16,11 @@
             <input type="text" name="search-user" id="search-user" class="search-user" placeholder="Search User">
             <i class="bi bi-search"></i>
         </div> 
-        {{-- <div class="user-list grid-col-4 margin-top"> --}}
-            {{-- @if(!isset($result) && count($results) == 0) --}}
-            {{-- @foreach($users as $user) 
+        <div class="user-list grid-col-4 margin-top">
+            @foreach($users as $user) 
                 <div class="user-card">
                     <div class="user-profile">
-                        <img src="{{asset('storage/images/'.$user->photo)}}" alt="Photo">
+                        <img src="{{asset('storage/images/'.$user->photo)}}" alt="photo">
                     </div>
                     <div class="user-details">
                         <h2 class="user-name">
@@ -32,7 +31,7 @@
                         </p>
                         <form action="{{route('user.destroy',$user->id)}}" method="post" class="flex">
                             @csrf
-                            @method('DELETE')
+                            @method('delete')
                             <a href="{{route('user.show',$user->id)}}" class="btn-small blue">
                                 <i class="bi bi-eye"></i>
                             </a>
@@ -45,34 +44,6 @@
                         </form>
                     </div>
                 </div>
-            @endforeach   --}}
-            {{-- @endif --}}
-        {{-- </div> --}}
+            @endforeach  
     </div>
-
-    <script type="text/javascript">
-       $(document).ready(function(){
-           $('#search-user').on('keyup',function(){
-               let value = $(this).val();
-                $.ajax({
-                    type: "GET",
-                    url: "{{route('search')}}",
-                    data: {query:value},
-                    success: function (response) {
-                        $('.container').append(response.output);
-                    }
-                });
-           });
-       });
-    </script>
-
-    <script type="text/javascript">
-       // $.ajaxSetup({header:{'csrftoken':'{{csrf_token()}}'}});
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-    </script>
- 
 @endsection
