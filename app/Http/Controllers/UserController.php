@@ -48,13 +48,13 @@ class UserController extends Controller
                                 <p class="user-email">
                                     '.$d->email.'
                                 </p>
-                                <form action='.route('user.destroy',$d->id).'>
+                                <form action='.route('user.destroy',$d->id).' '.'method=post class="flex">
                                     '.csrf_field().'
                                     '.method_field('DELETE').'
-                                    <a href='.route('user.show',$d->id).'class="btn-small blue">
+                                    <a href='.route('user.show',$d->id).' '.'class="btn-small blue">
                                         <i class="bi bi-eye"></i>
                                     </a>
-                                    <a href='.route('user.edit',$d->id).'class="btn-small orange">
+                                    <a href='.route('user.edit',$d->id).' '.'class="btn-small orange">
                                         <i class="bi bi-pencil"></i>
                                     </a>
                                     <button type="submit" class="btn-small red">
@@ -63,21 +63,7 @@ class UserController extends Controller
                                 </form>
                             </div>
                         </div>';
-                    //         <form action='.route('user.destroy'.','.$d->id).'>
-                    //             @crsf
-                    //             @method("DELETE")
-                    //             <a href='.route('user.show'.','.$d->id).'class="btn-small blue">
-                    //                 <i class="bi bi-eye"></i>
-                    //             </a>
-                    //             <a href='.route('user.edit'.','.$d->id).'class="btn-small orange">
-                    //                 <i class="bi bi-pencil"></i>
-                    //             </a>
-                    //             <button type="submit" class="btn-small red">
-                    //                 <i class="bi bi-trash"></i>
-                    //             </button>
-                    //         </form>
-                    //     </div>
-                    // ';
+                    
                 }
                 $output .= '</div>';
             }else{
