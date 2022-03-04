@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use LDAP\Result;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\Console\Input\Input;
 
 class UserController extends Controller
 {
@@ -20,6 +21,71 @@ class UserController extends Controller
         return view('user.index',compact('users'));
     }
     
+    public function search(Request $request){
+        if($request->ajax()){
+            $query = $request->input('query');
+            $data = '';
+            if($query != null){
+                $data = User::where('name','LIKE',"{$request->input('query')}%")
+                    ->get();
+            }else{
+                $data = User::all();
+            }
+
+            $output = '';
+            if(count($data)>0){
+                $output .= '<div class="user-list grid-col-4 margin-top">';
+                foreach($data as $d){
+                    $output.= '
+                        <div class="user-card">
+                            <div class="user-profile">
+                                <img src='.asset('storage/images/'.$d->photo).' alt="photo">
+                            </div>
+                            <div class="user-details">
+                                <h2 class="user-name">'
+                                    .$d->name.'
+                                </h2>
+                                <p class="user-email">
+                                    '.$d->email.'
+                                </p>
+                                <form action='.route('user.destroy',$d->id).'>
+                                    '.csrf_field().'
+                                    '.method_field('DELETE').'
+                                    <a href='.route('user.show',$d->id).'class="btn-small blue">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                    <a href='.route('user.edit',$d->id).'class="btn-small orange">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <button type="submit" class="btn-small red">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>';
+                    //         <form action='.route('user.destroy'.','.$d->id).'>
+                    //             @crsf
+                    //             @method("DELETE")
+                    //             <a href='.route('user.show'.','.$d->id).'class="btn-small blue">
+                    //                 <i class="bi bi-eye"></i>
+                    //             </a>
+                    //             <a href='.route('user.edit'.','.$d->id).'class="btn-small orange">
+                    //                 <i class="bi bi-pencil"></i>
+                    //             </a>
+                    //             <button type="submit" class="btn-small red">
+                    //                 <i class="bi bi-trash"></i>
+                    //             </button>
+                    //         </form>
+                    //     </div>
+                    // ';
+                }
+                $output .= '</div>';
+            }else{
+                $output  = '<p class="error-msg">No records found.</p>';
+            }
+            return $output;
+        }
+    }
     /**
      * Show the form for creating a new resource.
      *
